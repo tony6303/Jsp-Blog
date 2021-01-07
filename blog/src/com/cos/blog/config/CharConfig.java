@@ -22,12 +22,12 @@ public class CharConfig implements Filter{
      	request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 
-		String username = request.getParameter("username");
-		System.out.println("username : "+username);
-		
-		PrintWriter out = response.getWriter();
-		out.println("안녕");
-		out.flush();
+//		String username = request.getParameter("username");
+//		System.out.println("username : "+username);
+//		
+//		PrintWriter out = response.getWriter();
+//		out.println("안녕");
+//		out.flush();
 		chain.doFilter(request, response);
 	}
 }

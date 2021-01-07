@@ -1,19 +1,27 @@
 package com.cos.blog.service;
 
+import com.cos.blog.domain.user.User;
+import com.cos.blog.domain.user.UserDao;
 import com.cos.blog.domain.user.dto.JoinReqDto;
 import com.cos.blog.domain.user.dto.LoginReqDto;
 import com.cos.blog.domain.user.dto.UpdateReqDto;
-import com.cos.blog.domain.user.User;
 
 public class UserService {
+	private UserDao userDao;
+	
+	public UserService() {
+		userDao = new UserDao();
+	}
+	
+	
 	public int 회원가입(JoinReqDto dto) {
-
-		return -1; 
+		
+		int result = userDao.save(dto);
+		return result;
 	}
 
 	public User 로그인(LoginReqDto dto) {
-
-		return null;
+		return userDao.findByUsernameAndPassword(dto);
 	}
 
 	public int 회원수정(UpdateReqDto dto) {
@@ -21,8 +29,8 @@ public class UserService {
 		return -1;
 	}
 
-	public int 아이디중복체크(String username) {
-
-		return -1;
+	public int 유저네임중복체크(String username) {
+		int result = userDao.findByUsername(username);
+		return result;
 	}
 }
