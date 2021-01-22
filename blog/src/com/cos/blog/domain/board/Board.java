@@ -16,6 +16,12 @@ public class Board {
 	private int userId;
 	private String title;
 	private String content;
-	private int readCount; // 조회수 디폴트값 0
+	private int readCount;
 	private Timestamp createDate;
+	
+	public String getTitle() {
+		return title.replaceAll("<", "&lt").replaceAll(">", "&gt");
+	}
 }
+
+

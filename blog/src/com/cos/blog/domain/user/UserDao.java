@@ -61,7 +61,7 @@ public class UserDao {
 
 	}
 
-	public User findByUsernameAndPassword(LoginReqDto dto) {
+	public User findByUsernameAndPassword(LoginReqDto dto) { // 로그인
 		String sql = "SELECT id, username, email, address FROM user WHERE username = ? and password =?";
 		Connection conn = DB.getConnection();
 		PreparedStatement pstmt = null;

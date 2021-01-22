@@ -13,8 +13,7 @@ public class DBTest {
 	
 	@Test
 	public void DBConnectionTest() {
-		DB.getConnection();
-		Connection conn2 = null;
+		Connection conn2 = DB.getConnection();
 		assertNotNull(conn2);
 	}
 }

@@ -39,12 +39,12 @@ public class UserController extends HttpServlet {
 		String cmd = request.getParameter("cmd");
 
 		// http://localhost:8000/blog/user?cmd=loginForm
-		if(cmd.equals("loginForm")) {
+		if(cmd.equals("loginForm")) { //로그인 페이지
 			// 서비스 호출
 			RequestDispatcher dis = request.getRequestDispatcher("user/loginForm.jsp");
 			dis.forward(request, response);
 			//response.sendRedirect("user/loginForm.jsp");
-		}else if(cmd.equals("login")) {
+		}else if(cmd.equals("login")) { //로그인 완료
 			// 서비스 호출
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
@@ -56,18 +56,20 @@ public class UserController extends HttpServlet {
 			if(userEntity != null) {
 				HttpSession session = request.getSession();
 				session.setAttribute("principal", userEntity); //인증주체
-				response.sendRedirect("index.jsp"); //로그인 성공
+				//response.sendRedirect("index.jsp"); //로그인 성공
+				RequestDispatcher dis = request.getRequestDispatcher("index.jsp");
+				dis.forward(request, response);
 			}else {
 				Script.back(response, "로그인 실패");
 			}
 			
 			
-		}else if(cmd.equals("joinForm")) {
+		}else if(cmd.equals("joinForm")) { //회원가입 페이지
 			RequestDispatcher dis = request.getRequestDispatcher("user/joinForm.jsp");
 			dis.forward(request, response);
 			//response.sendRedirect("user/joinForm.jsp");
 			
-		}else if(cmd.equals("join")) {
+		}else if(cmd.equals("join")) { //회원가입 완료
 			// 서비스 호출
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
@@ -81,11 +83,12 @@ public class UserController extends HttpServlet {
 			System.out.println("회원가입 : "+dto);
 			int result = userService.회원가입(dto); //DB와 통신함 (service -> Dao)
 			if(result == 1) {
-				response.sendRedirect("index.jsp");
+				RequestDispatcher dis = request.getRequestDispatcher("index.jsp");
+				dis.forward(request, response);
 			}else {
 				Script.back(response, "회원가입 실패 -1");
 			}
-		}else if(cmd.equals("usernameCheck")) {
+		}else if(cmd.equals("usernameCheck")) { //유저네임 중복체크
 			BufferedReader br = request.getReader();
 			String username = br.readLine();
 			System.out.println(username);
@@ -98,10 +101,11 @@ public class UserController extends HttpServlet {
 				out.print("fail");
 			}
 			out.flush();
-		}else if(cmd.equals("logout")) {
+		}else if(cmd.equals("logout")) { //로그아웃
 			HttpSession session = request.getSession();
 			session.invalidate(); //즉시 세션 만료
-			response.sendRedirect("index.jsp");
+			RequestDispatcher dis = request.getRequestDispatcher("index.jsp");
+			dis.forward(request, response);
 		}
 	}
 }
