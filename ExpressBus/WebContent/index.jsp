@@ -74,10 +74,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm">
-				<button id="NAEK010">NAEK010</button>
+				<button id="NAEK300">대전복합=300</button>
 			</div>
 			<div class="col-sm">
-				<button id="NAEK300">NAEK300</button>
+				<button id="NAEK010">서울경부=010</button>
 			</div>
 			<div class="col-sm"></div>
 		</div>
@@ -114,14 +114,16 @@
 
 		console.log(viewText);
 	}
-	$("#NAEK010").click(function(){
-		$("#depPland").val("NAEK010");
+	$("#NAEK300").click(function(){
+		$("#depPland").val("NAEK300");
 		$("#depPland").removeAttr("disabled");
+	});
+	
+	$("#NAEK010").click(function(){
+		$("#arrPland").val("NAEK010");
+		$("#arrPland").removeAttr("disabled");
 		});
 	
-	$("#NAEK300").click(function(){
-		$("#arrPland").val("NAEK300");
-		$("#arrPland").removeAttr("disabled");
-	});
+	
 </script>
 <script src="js/datepicker-ko.js"></script>
