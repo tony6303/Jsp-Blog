@@ -1,10 +1,11 @@
-package com.cos.bus.api;
+package com.cos.bus.config;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,7 +18,16 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 import org.xml.sax.SAXException;
 
+import com.cos.bus.domain.BusInfo;
+
 public class ApiExplorer { 
+	final static String numOfRows = "4"; 
+	final static String serviceKey = "lm5Rn%2BrBLMSh%2F6ttTvkPQMpci6a7OgyXiIDbg%2BhszsGlhwdWfebxdTLLZmOixK4oCgarJHor47NPjb8PGSJfPQ%3D%3D";
+	
+	public ApiExplorer() throws IOException, ParserConfigurationException, SAXException {
+		busInfoParse();
+	}
+	
 	private static String getTagValue(String tag, Element eElement) {
 		//nlList = (NodeList)node
 		//nlList.item(0) =  (NodeList)element
@@ -29,16 +39,6 @@ public class ApiExplorer {
 	    return nValue.getNodeValue();
 	}
 	
-	private static String getTimeValue(String tag, Element eElement) {
-		//nlList = (NodeList)node
-		//nlList.item(0) =  (NodeList)element
-		//nlList.item(0).getNodeValue() = (Node)element
-	    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-	    Node nValue = (Node) nlList.item(0);
-	    if(nValue == null) 
-	        return null;
-	    return nValue.getNodeValue();
-	}
 	
 	private static String timeMapping(StringBuffer time) {
 		time.insert(4, "년");
@@ -51,15 +51,15 @@ public class ApiExplorer {
 	
 	public void busInfoParse() throws IOException, ParserConfigurationException, SAXException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=lm5Rn%2BrBLMSh%2F6ttTvkPQMpci6a7OgyXiIDbg%2BhszsGlhwdWfebxdTLLZmOixK4oCgarJHor47NPjb8PGSJfPQ%3D%3D"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("5", "UTF-8")); /*한 페이지 결과 수*/
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + serviceKey); /*Service Key*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8")); /*한 페이지 결과 수*/
         //urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지 번호*/
         urlBuilder.append("&" + URLEncoder.encode("depTerminalId","UTF-8") + "=" + URLEncoder.encode("NAEK010", "UTF-8")); /*출발터미널ID*/
         urlBuilder.append("&" + URLEncoder.encode("arrTerminalId","UTF-8") + "=" + URLEncoder.encode("NAEK300", "UTF-8")); /*도착터미널ID*/
         urlBuilder.append("&" + URLEncoder.encode("depPlandTime","UTF-8") + "=" + URLEncoder.encode("20200101", "UTF-8")); /*출발일*/
         //urlBuilder.append("&" + URLEncoder.encode("busGradeId","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*버스등급ID*/
         URL url = new URL(urlBuilder.toString());
-//        System.out.println(url);
+        System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
@@ -86,44 +86,31 @@ public class ApiExplorer {
 
         // root tag 
         doc.getDocumentElement().normalize();
-        System.out.println("ApiExplorer busInfoParse() 실행됨");
-//        System.out.println("Root element: " + doc.getDocumentElement().getNodeName()); // 최상위 태그 : response
+        System.out.println("Root element: " + doc.getDocumentElement().getNodeName()); // 최상위 태그 : response
 
         NodeList nList = doc.getElementsByTagName("item");
-//        System.out.println("파싱할 리스트 수 : "+ nList.getLength()); // item의 개수
+        System.out.println("파싱할 리스트 수 : "+ nList.getLength()); // item의 개수
+        
+        ArrayList<BusInfo> item = new ArrayList<>();
         
         for(int temp = 0; temp < nList.getLength(); temp++){ //nList로 찾았던 element들의 길이만큼 반복
         	Node nNode = nList.item(temp); // 노드 리스트에서 temp를 인덱스로 추출
         	if(nNode.getNodeType() == Node.ELEMENT_NODE){ // 노드의 타입이 element라면
         						
         		Element eElement = (Element) nNode; //node를 Element 타입으로 캐스팅
-        		
-//        		String arrPlandNmStr = getTagValue(eElement.getFirstChild().getNodeName(), eElement);
-//        		String arrPlandNmStr2 = getTagValue(eElement.getNodeName(), eElement);
-//        		String arrPlandTimeStr = getTagValue(eElement.getFirstChild().getNextSibling().getNodeName(), eElement);
-//        		String chargeStr = getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNodeName(), eElement);
-//        		String depPlandNmStr = getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement);
-//        		String depPlandTimeStr = getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement);
-//        		String grandNmStr = getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement);
+        		        		
+        		StringBuffer depPlandTime = new StringBuffer(getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement));
+        		StringBuffer arrPlandTime = new StringBuffer(getTagValue(eElement.getFirstChild().getNextSibling().getNodeName(), eElement));
         		
         		String arrPlaceNmStr = getTagValue("arrPlaceNm", eElement);
         		String chargeStr = getTagValue("charge", eElement);
         		String depPlaceNmStr = getTagValue("depPlaceNm", eElement);
         		String gradeNmStr = getTagValue("gradeNm", eElement);
+        		String depPlandTimeStr = depPlandTime.toString();
+        		String arrPlandTimeStr = arrPlandTime.toString();
         		
-        		
-//        		String routeIdStr = getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement);
-//        		System.out.println(eElement.getFirstChild().getNextSibling().getNodeName());
-//        		System.out.println(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName());
-//        		System.out.println(getTagValue(depPlandTimeStr.toString(), eElement));
-        		
-        		
-        		
-        		StringBuffer depPlandTime = new StringBuffer(getTagValue(eElement.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling().getNodeName(), eElement));
-        		StringBuffer arrPlandTime = new StringBuffer(getTagValue(eElement.getFirstChild().getNextSibling().getNodeName(), eElement));
-        		
-        		
-        		
+        		BusInfo bi = new BusInfo(arrPlaceNmStr, chargeStr, depPlaceNmStr, gradeNmStr, depPlandTimeStr, arrPlandTimeStr);
+        		item.add(bi);
         		
         		System.out.println("######################");
 //        		System.out.println(eElement.getTextContent());
@@ -135,6 +122,11 @@ public class ApiExplorer {
         		System.out.println("버스등급  : " + gradeNmStr);
         	}	// for end
         }	// if end
+        
+        //ArrayList 출력
+        for(BusInfo i : item) { 
+            System.out.println(i);
+        }
 	}
 	
     

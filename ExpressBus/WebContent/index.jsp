@@ -1,3 +1,5 @@
+<%@page import="java.net.URLDecoder"%>
+<%@page import="jdk.internal.misc.FileSystemOption"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -30,74 +32,96 @@
 
 	</div>
 
+	<%
+		String serviceKey = "lm5Rn%2BrBLMSh%2F6ttTvkPQMpci6a7OgyXiIDbg%2BhszsGlhwdWfebxdTLLZmOixK4oCgarJHor47NPjb8PGSJfPQ%3D%3D";
+	String decodeKey = URLDecoder.decode(serviceKey, "utf-8");
+	%>
+	<div class="container">
+
+		<form
+			action="http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?"
+			method="get">
+			<h1>정보입력</h1>
+
+			<input type="hidden" name="serviceKey" value=<%=decodeKey%>>
+			<!-- 
+		<input type="hidden" name="depTerminalId" value="NAEK010">
+		<input type="hidden" name="arrTerminalId" value="NAEK300">
+		 -->
+			<!-- <input type="hidden" name="depPlandTime" value="20210125"> -->
+
+			<div class="row">
+				<div class="col-sm">
+					출발지 : <input type="text" name="depTerminalId" id="depPland" readonly="readonly"
+						disabled="disabled">
+				</div>
+				<div class="col-sm">
+					도착지 : <input type="text" name="arrTerminalId" id="arrPland" readonly="readonly"
+						disabled="disabled">
+				</div>
+				<div class="col-sm">
+					출발날짜 : <input type="text" name="depPlandTime" id="date3" size="12"
+						readonly="readonly" />
+					<button id="submit" onclick="timeMapping();">조회</button>
+				</div>
+			</div>
+
+		</form>
+
+
+	</div>
+
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-4">
-				<h3>출발지</h3>
-				<div class="dropdown">
-					<button type="button" class="btn btn-primary dropdown-toggle"
-						data-toggle="dropdown">Dropdown button</button>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#" onclick="setBusan()">부산</a> 
-						<a class="dropdown-item" href="#">서울</a> 
-						<a class="dropdown-item" href="#">광주</a>
-					</div>
-				</div>
+			<div class="col-sm">
+				<button id="NAEK010">NAEK010</button>
 			</div>
-			<div class="col-sm-4">
-				<h3>도착지</h3>
-				<div class="txc-textbox">
-					<!-- Single button -->
-					<div id="example" class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Action <span class="caret"> </span>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="javascript:void(0)">Action</a></li>
-							<li><a href="javascript:void(0)">Another action</a></li>
-							<li><a href="javascript:void(0)">Somethingelse here</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="javascript:void(0)">Separated link</a></li>
-						</ul>
-					</div>
-				</div>
-
+			<div class="col-sm">
+				<button id="NAEK300">NAEK300</button>
 			</div>
-			<div class="col-sm-4">
-				<h3>출발 날짜</h3>
-				<input type="text" name="date" id="date3" size="12" />
-			</div>
+			<div class="col-sm"></div>
 		</div>
-
-		<input type="hidden" id="depPland" readonly="readonly" disabled="disabled"> 
-		<input type="hidden" id="arrPland">
-		<input type="hidden" type="date" id="depPlandTime">
-
-	</div>
-	</div>
-
 	</div>
 
 </body>
 </html>
 
 <script>
+	// dropdown 구현하려다가 안쓰게 된 함수
+	/*
 	$('#example .dropdown-menu li > a').bind(
-			'click',
-			function(e) {
-				var html = $(this).html();
-				$('#example button.dropdown-toggle').html(
-						html + ' <span class="caret"></span>');
-			});
+		'click',
+		function(e) {
+			var html = $(this).html();
+			$('#example button.dropdown-toggle').html(
+					html + ' <span class="caret"></span>');
+		});
+	 */
 
+	// DatePicker 속성 설정
 	$("#date3").datepicker({
 		changeYear : true,
-		changeMonth : true
+		changeMonth : true,
+		dateFormat : "yy-mm-dd"
 	});
 
-	function setBusan() {
-		$("#depPland").val("부산")
+	// DatePicker로 가져온 날짜에 "-" 문자를 지워주는 함수
+	function timeMapping() {
+		var viewText = $("#date3").val();
+
+		var regEx = new RegExp("-", "gi");
+		$("#date3").val(viewText.replace(regEx, ""));
+
+		console.log(viewText);
 	}
+	$("#NAEK010").click(function(){
+		$("#depPland").val("NAEK010");
+		$("#depPland").removeAttr("disabled");
+		});
+	
+	$("#NAEK300").click(function(){
+		$("#arrPland").val("NAEK300");
+		$("#arrPland").removeAttr("disabled");
+	});
 </script>
 <script src="js/datepicker-ko.js"></script>
