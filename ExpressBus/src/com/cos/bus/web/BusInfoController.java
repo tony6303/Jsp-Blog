@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cos.bus.domain.BusInfo;
+
 //http://localhost:8080/ExpressBus/businfo
 @WebServlet("/businfo")
 public class BusInfoController extends HttpServlet {
@@ -31,8 +33,21 @@ public class BusInfoController extends HttpServlet {
 		String cmd = request.getParameter("cmd");
 		HttpSession session = request.getSession();
 		
-		if(cmd.equals("something")) { //
-				
+		if(cmd.equals("result")) { //
+			String arrPlaceNm = request.getParameter("arrTerminalId");
+			String depPlaceNm = request.getParameter("depTerminalId");
+//			String charge = request.getParameter("content");
+//			String depPlandTime = request.getParameter("content");
+//			String arrPlandTime = request.getParameter("content");
+			
+			BusInfo busInfo = new BusInfo();
+			busInfo.setArrPlaceNm(arrPlaceNm);
+			busInfo.setDepPlaceNm(depPlaceNm);
+			
+			request.setAttribute("busInfo", busInfo);
+			
+			RequestDispatcher dis = request.getRequestDispatcher("businfo/result.jsp");
+			dis.forward(request, response);
 		}
 	}
 }

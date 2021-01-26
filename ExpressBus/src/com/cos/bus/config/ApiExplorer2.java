@@ -95,7 +95,7 @@ public class ApiExplorer2 {
         		map.put(terminalIdStr , terminalNmStr);
         	}	// for end
         }	// if end
-        System.out.println("HashMap 사이즈 : " + map.size());
-//        System.out.println(map);
+//        System.out.println("HashMap 사이즈 : " + map.size());
+        System.out.println(map);
 	}
 }

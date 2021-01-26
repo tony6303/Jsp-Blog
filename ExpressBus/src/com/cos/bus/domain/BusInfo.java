@@ -13,7 +13,6 @@ public class BusInfo {
 	private String arrPlaceNm;
 	private String charge;
 	private String depPlaceNm;
-	private String gradeNm;
 	private String depPlandTime;
 	private String arrPlandTime;
 }

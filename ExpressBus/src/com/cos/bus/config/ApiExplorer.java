@@ -23,9 +23,14 @@ import com.cos.bus.domain.BusInfo;
 public class ApiExplorer { 
 	final static String numOfRows = "4"; 
 	final static String serviceKey = "lm5Rn%2BrBLMSh%2F6ttTvkPQMpci6a7OgyXiIDbg%2BhszsGlhwdWfebxdTLLZmOixK4oCgarJHor47NPjb8PGSJfPQ%3D%3D";
+	ArrayList<BusInfo> item = new ArrayList<>();
 	
 	public ApiExplorer() throws IOException, ParserConfigurationException, SAXException {
 		busInfoParse();
+		//ArrayList 출력
+        for(BusInfo i : item) { 
+            System.out.println(i);
+        }
 	}
 	
 	private static String getTagValue(String tag, Element eElement) {
@@ -91,7 +96,7 @@ public class ApiExplorer {
         NodeList nList = doc.getElementsByTagName("item");
         System.out.println("파싱할 리스트 수 : "+ nList.getLength()); // item의 개수
         
-        ArrayList<BusInfo> item = new ArrayList<>();
+        
         
         for(int temp = 0; temp < nList.getLength(); temp++){ //nList로 찾았던 element들의 길이만큼 반복
         	Node nNode = nList.item(temp); // 노드 리스트에서 temp를 인덱스로 추출
@@ -109,7 +114,7 @@ public class ApiExplorer {
         		String depPlandTimeStr = depPlandTime.toString();
         		String arrPlandTimeStr = arrPlandTime.toString();
         		
-        		BusInfo bi = new BusInfo(arrPlaceNmStr, chargeStr, depPlaceNmStr, gradeNmStr, depPlandTimeStr, arrPlandTimeStr);
+        		BusInfo bi = new BusInfo(arrPlaceNmStr, chargeStr, depPlaceNmStr, depPlandTimeStr, arrPlandTimeStr);
         		item.add(bi);
         		
         		System.out.println("######################");
@@ -123,10 +128,7 @@ public class ApiExplorer {
         	}	// for end
         }	// if end
         
-        //ArrayList 출력
-        for(BusInfo i : item) { 
-            System.out.println(i);
-        }
+        
 	}
 	
     

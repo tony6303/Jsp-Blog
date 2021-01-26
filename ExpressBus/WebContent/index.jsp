@@ -37,10 +37,9 @@
 	String decodeKey = URLDecoder.decode(serviceKey, "utf-8");
 	%>
 	<div class="container">
-
-		<form
-			action="http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?"
-			method="get">
+<!-- action="http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?" -->
+		<form action="/ExpressBus/businfo?cmd=result"
+			method="post">
 			<h1>정보입력</h1>
 
 			<input type="hidden" name="serviceKey" value=<%=decodeKey%>>
