@@ -14,16 +14,21 @@
 			<th>출발지</th>
 			<th>도착지</th>
 			<th>요금</th>
+			<th>등급</th>
 			<th>출발시간</th>
 			<th>도착시간</th>
 		</tr>
-		<tr>
-			<td><c:out value="${busInfo.depPlaceNm }"></c:out></td>
-			<td><c:out value="${busInfo.arrPlaceNm }"></c:out></td>
-			<td><c:out value="${busInfo.charge }"></c:out></td>
-			<td><c:out value="${busInfo.depPlandTime }"></c:out></td>
-			<td><c:out value="${busInfo.arrPlandTime }"></c:out></td>
-		</tr>
+		<c:forEach var="busInfo" items="${busInfos }">
+			<tr>
+				<td><c:out value="${busInfo.depPlaceNm }"></c:out></td>
+				<td><c:out value="${busInfo.arrPlaceNm }"></c:out></td>
+				<td><c:out value="${busInfo.charge }"></c:out></td>
+				<td><c:out value="${busInfo.gradeNm }"></c:out></td>
+				<td><c:out value="${busInfo.depPlandTime }"></c:out></td>
+				<td><c:out value="${busInfo.arrPlandTime }"></c:out></td>
+			</tr>
+		</c:forEach>
+		
 	</table>
 </body>
 </html>

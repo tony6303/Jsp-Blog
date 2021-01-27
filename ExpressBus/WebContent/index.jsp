@@ -34,29 +34,23 @@
 
 	<%
 		String serviceKey = "lm5Rn%2BrBLMSh%2F6ttTvkPQMpci6a7OgyXiIDbg%2BhszsGlhwdWfebxdTLLZmOixK4oCgarJHor47NPjb8PGSJfPQ%3D%3D";
-	String decodeKey = URLDecoder.decode(serviceKey, "utf-8");
+		String decodeKey = URLDecoder.decode(serviceKey, "utf-8");
 	%>
 	<div class="container">
-<!-- action="http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?" -->
-		<form action="/ExpressBus/businfo?cmd=result"
-			method="post">
+		<!-- action="http://openapi.tago.go.kr/openapi/service/ExpBusInfoService/getStrtpntAlocFndExpbusInfo?" -->
+		<form action="/ExpressBus/businfo?cmd=result" method="post"
+			onsubmit="Mapping();">
 			<h1>정보입력</h1>
 
 			<input type="hidden" name="serviceKey" value=<%=decodeKey%>>
-			<!-- 
-		<input type="hidden" name="depTerminalId" value="NAEK010">
-		<input type="hidden" name="arrTerminalId" value="NAEK300">
-		 -->
-			<!-- <input type="hidden" name="depPlandTime" value="20210125"> -->
-
 			<div class="row">
 				<div class="col-sm">
-					출발지 : <input type="text" name="depTerminalId" id="depPland" readonly="readonly"
-						disabled="disabled">
+					출발지 : <input type="text" name="depTerminalId" id="depPland"
+						readonly="readonly" disabled="disabled">
 				</div>
 				<div class="col-sm">
-					도착지 : <input type="text" name="arrTerminalId" id="arrPland" readonly="readonly"
-						disabled="disabled">
+					도착지 : <input type="text" name="arrTerminalId" id="arrPland"
+						readonly="readonly" disabled="disabled">
 				</div>
 				<div class="col-sm">
 					출발날짜 : <input type="text" name="depPlandTime" id="date3" size="12"
@@ -104,6 +98,11 @@
 		dateFormat : "yy-mm-dd"
 	});
 
+	function Mapping() {
+		$("#depPland").val("NAEK300");
+		$("#arrPland").val("NAEK010");
+	}
+
 	// DatePicker로 가져온 날짜에 "-" 문자를 지워주는 함수
 	function timeMapping() {
 		var viewText = $("#date3").val();
@@ -111,18 +110,15 @@
 		var regEx = new RegExp("-", "gi");
 		$("#date3").val(viewText.replace(regEx, ""));
 
-		console.log(viewText);
 	}
-	$("#NAEK300").click(function(){
-		$("#depPland").val("NAEK300");
+	$("#NAEK300").click(function() {
+		$("#depPland").val("대전복합");
 		$("#depPland").removeAttr("disabled");
 	});
-	
-	$("#NAEK010").click(function(){
-		$("#arrPland").val("NAEK010");
+
+	$("#NAEK010").click(function() {
+		$("#arrPland").val("서울경부");
 		$("#arrPland").removeAttr("disabled");
-		});
-	
-	
+	});
 </script>
 <script src="js/datepicker-ko.js"></script>

@@ -10,6 +10,7 @@
 <body>
 <%
 	ApiExplorer test = new ApiExplorer();
+	test.findAll("1", "20", "3");
 %>
 <h1>ApiExplorer Test</h1>
 </body> 
