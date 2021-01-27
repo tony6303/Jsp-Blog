@@ -31,7 +31,7 @@ public class ForbiddenUrlConfig implements Filter{
     	}
     	else {
     		PrintWriter out = response.getWriter();
-    		out.print("잘못된 접근입니다.");
+    		out.print("잘못된 접근입니다~~.");
     		out.flush();
     	}
 	}
