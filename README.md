@@ -1,4 +1,4 @@
-# JSP 블로그 프로젝트
+# JSP 블로그 프로젝트 ( blog 만 해당됨 )
 
 ## 환경
 
@@ -57,3 +57,16 @@ CREATE TABLE reply(
     foreign key (boardId) references board (id) on delete cascade
 ) engine=InnoDB default charset=utf8;
 ```
+
+
+
+
+
+# ExpressBus 프로젝트
+
+## 남은 작업목록
+index 페이지에서 지역 - 지역코드 매칭되게 하기
+(대전복합 을누르면 NAEK010 이입력되도록)
+
+result 페이지에서 xml데이터를 잘 가공해서 table로 보여주기
+
